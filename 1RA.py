@@ -37,18 +37,17 @@ while contador > 1:
         i[indice_cambio] = valor_aleatorio
     contador -= 1
 
-print(np.array(b))
+matriz1=np.array(b)
+#print(np.array(b))
 
-#variables x1 a x6
+#variables x1 a xn
 x_inicial=[]
-x= S.symbols('x')
 for i in range(n):
-   vec_var=(x*i)
-   x_inicial.append(vec_var)
-
+    x_inicial.append(S.symbols("x"+str(i)))
 print(x_inicial)
 
-#
+#transformada
+
 
 
 
