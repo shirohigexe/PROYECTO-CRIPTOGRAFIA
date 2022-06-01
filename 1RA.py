@@ -1,3 +1,4 @@
+from typing import Counter
 import sympy as S 
 import random 
 
@@ -9,19 +10,28 @@ F = ffield.FField(valor_campo)
 #help(ffield.FField)
 F.ShowPolynomial
 
+#numero a codificar
+#entrada = input("ingrese el numero que desea codificar: ")
+#Contador=Counter(entrada )
+n=6 
+
+
+
+
 
 #matriz aleatoria
 import numpy as np
  #crear un array numpy con ceros
-A = np.zeros((valor_campo-1,valor_campo-1))
-print(A)
+A = np.zeros((n,n))
+#print(A)
+
 #vector de simbolos
-x= S.symbols('x')
+α= S.symbols('α')
 #np.power(x,2)
-ver_simbo=[0, 1, np.power(x,1), np.power(x,2)]
-#ver_simbo=[0, 1, x**1, x**2]
+ver_simbo=[0, 1, np.power(α,1), np.power(α,2)]
+#ver_simbo=[0, 1, α**1, α**2]
 
-
+#generacion de matriz aleatoria
 b = (A.tolist())
 contador = len(b)**2
 while contador > 1:
@@ -33,6 +43,12 @@ while contador > 1:
 
 print(b)
 
+
+#variables x1 a x6
+#x_inicial=[]
+#for i in n:
+   # variable=np.power(x,i)
+   # x_inicial.append(variable)
 
 
 
