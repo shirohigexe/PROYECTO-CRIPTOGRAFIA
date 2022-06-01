@@ -1,10 +1,13 @@
 """
 Programa para generar la llave pública y privada
+
+Se necesitan instalar las librerías sympy, random, pyfinite y numpy.
 """
 
 from typing import Counter
 import sympy as S 
 import random 
+import numpy as np
 from pyfinite import ffield      # campo finito
 
 valor_primo     = [3, 5, 7]                     # Posibles valores para escoger el campo
@@ -14,26 +17,19 @@ F = ffield.FField(valor_campo)                  # Se crea el campo
 #print(valor_campo)
 #print(F.ShowPolynomial(valor_campo))
 
+#// ***** // Paso 1. Creación de la matriz para la transformación lineal // ***** // #
 
-#tamaño del numero a codificar
-n=6 
+n=6                                             #tamaño del numero a codificar
+transformacion_lineal_0 = np.zeros((n,n))       #crear un array numpy con ceros de tamaño nxn
+#print(transformacion_lineal_0)
 
-#matriz aleatoria
-import numpy as np
 
-#crear un array numpy con ceros
-transformacion_lineal_0 = np.zeros((n,n))
-print(transformacion_lineal_0)
-a = np.sum(transformacion_lineal_0, axis=0)
-print(a)
-print(a[1])
-#vector de simbolos
-α= S.symbols('α')
+α= S.symbols('α')                               # Se genera un vector de simbolos
 #np.power(x,2)
 ver_simbo=[0, 1, np.power(α,1), np.power(α,2)]
 #ver_simbo=[0, 1, α**1, α**2]
 
-#generacion de matriz aleatoria
+# Se empieza la generacion de la matriz aleatoria
 transformacion_lineal = (transformacion_lineal_0.tolist())
 contador = len(transformacion_lineal)**2
 while contador > 1:
@@ -45,25 +41,22 @@ while contador > 1:
 
 # Convertimos el arreglo en una matriz de numpy
 transformacion_lineal = np.array(transformacion_lineal)
-print(transformacion_lineal)
+#print(transformacion_lineal)
 
-#variables x1 a xn
+# Obtenemos las variables x1 a xn
 x_inicial=[]                                    # Arreglo de varibles iniciales
 for i in range(n):
     x_inicial.append(S.symbols("x"+str(i)))     # Creamos las xn variables
 x_inicial = np.transpose(x_inicial)             # Creamos el vector X
-print(x_inicial)
+#print(x_inicial)
 
-#transformada
-print("*************RESULTADO**************")
-print(transformacion_lineal*x_inicial)
-print("*************RESULTADO**************")
-print(np.transpose(transformacion_lineal*x_inicial))
-print("POLIX")
-print(np.sum(np.transpose(transformacion_lineal*x_inicial), axis=0))
-print("DOT PRODUCT")
-print(transformacion_lineal.dot(x_inicial))
+# Obtenemos los polinomios pertenecientes a la transformación lineal
+polinomiosFTransLineal = transformacion_lineal.dot(x_inicial)
+for i in range(n):
+    print(polinomiosFTransLineal[i])
 
+
+#// ***** // Paso 2. Creación de los polinomios de vinagre y aceite // ***** // #
 
 
 
