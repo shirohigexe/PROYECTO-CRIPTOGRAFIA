@@ -4,27 +4,23 @@ import random
 
 #campo finito
 from pyfinite import ffield
+
 valor_primo=[3, 5, 7]
 valor_campo=random.choice(valor_primo)
 F = ffield.FField(valor_campo) 
 #help(ffield.FField)
-F.ShowPolynomial
+print(valor_campo)
+print(F.ShowPolynomial(valor_campo))
 
-#numero a codificar
-#entrada = input("ingrese el numero que desea codificar: ")
-#Contador=Counter(entrada )
+
+#tamaño del numero a codificar
 n=6 
-
-
-
-
 
 #matriz aleatoria
 import numpy as np
- #crear un array numpy con ceros
+#crear un array numpy con ceros
 A = np.zeros((n,n))
-#print(A)
-
+print(A)
 #vector de simbolos
 α= S.symbols('α')
 #np.power(x,2)
@@ -41,14 +37,18 @@ while contador > 1:
         i[indice_cambio] = valor_aleatorio
     contador -= 1
 
-print(b)
-
+print(np.array(b))
 
 #variables x1 a x6
-#x_inicial=[]
-#for i in n:
-   # variable=np.power(x,i)
-   # x_inicial.append(variable)
+x_inicial=[]
+x= S.symbols('x')
+for i in range(n):
+   vec_var=(x*i)
+   x_inicial.append(vec_var)
+
+print(x_inicial)
+
+#
 
 
 
