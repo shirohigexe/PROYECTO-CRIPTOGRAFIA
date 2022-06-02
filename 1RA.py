@@ -58,6 +58,17 @@ for i in range(n):
 
 #// ***** // Paso 2. Creación de los polinomios de vinagre y aceite // ***** // #
 
+o=n/2    
+v=o
+
+vector_polinomio=[] 
+
+ # Arreglo de varibles VINAGRE Y ACEITE
+
+#for i in range(0,o):
+   # poli=(S.symbols("Xv"+str(i))*S.symbols("Xv"+str(i)))+(S.symbols("Xv"+str(i))*S.symbols("Xo"+str(i)))+(S.symbols("Xv"+str(i)))+(S.symbols("X0"+str(i)))
+    #S.symbols("Xv"+str(i)))
+    #vector_polinomio.append( poli)     
 
 
 
