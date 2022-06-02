@@ -61,7 +61,7 @@ print(transformacion_lineal)
 
 # Obtenemos las variables x1 a xn
 x_inicial=[]                                    # Arreglo de varibles iniciales
-for i in range(n):
+for i in range(n+1):
     x_inicial.append(S.symbols("x"+str(i)))    # Creamos las xn variables
 x_inicial = np.transpose(x_inicial)             # Creamos el vector X
 #print(x_inicial)
