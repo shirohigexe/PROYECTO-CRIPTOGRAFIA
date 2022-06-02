@@ -10,9 +10,14 @@ import random
 import numpy as np
 from pyfinite import ffield      # campo finito
 
-valor_primo     = [3, 5, 7]                     # Posibles valores para escoger el campo
-valor_campo     = random.choice(valor_primo)    # Se escoge el primo para el campo
-F = ffield.FField(valor_campo)                  # Se crea el campo
+#campo finito
+from pyfinite import ffield
+
+#n = int(input("ingrese el numero primo que desea: "))
+
+valor_primo=[2,3,5,7]
+valor_campo=random.choice(valor_primo)
+F = ffield.FField(valor_campo) 
 #help(ffield.FField)
 #print(valor_campo)
 #print(F.ShowPolynomial(valor_campo))
@@ -23,6 +28,16 @@ n=6                                             #tamaño del numero a codificar
 transformacion_lineal_0 = np.zeros((n,n))       #crear un array numpy con ceros de tamaño nxn
 #print(transformacion_lineal_0)
 
+#matriz aleatoria
+import numpy as np
+#lectura de hash
+n=5
+#crear un array numpy con ceros
+A = np.zeros((n,n))
+#vector de simbolos
+x= S.symbols('x')
+#np.power(x,2)
+ver_simbo=[0, 1, np.power(x,1), np.power(x,2)]
 
 α= S.symbols('α')                               # Se genera un vector de simbolos
 #np.power(x,2)
@@ -41,12 +56,13 @@ while contador > 1:
 
 # Convertimos el arreglo en una matriz de numpy
 transformacion_lineal = np.array(transformacion_lineal)
+print(transformacion_lineal)
 #print(transformacion_lineal)
 
 # Obtenemos las variables x1 a xn
 x_inicial=[]                                    # Arreglo de varibles iniciales
 for i in range(n):
-    x_inicial.append(S.symbols("x"+str(i)))     # Creamos las xn variables
+    x_inicial.append(S.symbols("x"+str(i)))    # Creamos las xn variables
 x_inicial = np.transpose(x_inicial)             # Creamos el vector X
 #print(x_inicial)
 
