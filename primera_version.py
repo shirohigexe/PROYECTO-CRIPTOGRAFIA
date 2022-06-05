@@ -4,6 +4,10 @@ import random
 import numpy as np
 from pyfinite import ffield 
 
+"""creacion del campo y sus terminos enteros
+para esto, se toma en cuenta la definicion de campo y enteros modulo m,
+con esto tomamos 10 representantes de las clases de 
+equivalencia"""
 q = 7
 def campo(q):
     campo_elementos = []
@@ -21,7 +25,8 @@ campo = campo(q)
 print(campo)
 
 
-
+"""proceso de creacion de las vaiables Oil y Vinager de modo
+que se puedan usar de manera independiente más adelante"""
 
 o = 2 # numero de ecuaciones
 v = o 
@@ -44,9 +49,13 @@ for i in indices_O:
     x_oil.append(S.symbols("x"+str(i)))
 print(x_oil)
 
+
+
 """generacion de llaves
 del modelo Oil and Vinager"""
 
+
+#primero definimos una funcion que cree los terminos del polinomio a crear
 def sumatoriaPolinomica(V,O,campo): #V = x_vinagre, O= x_oil
 
     polinomios = []
@@ -61,8 +70,26 @@ def sumatoriaPolinomica(V,O,campo): #V = x_vinagre, O= x_oil
             ov.append(random.choice(campo)*i*j)
             polinomios.append(random.choice(campo)*i*j)
     
+    for i in V:
+        polinomios.append(random.choice(campo)*i)
+    
+    for i in O:
+        polinomios.append(random.choice(campo)*i)
+
+    polinomios.append(random.choice(campo))
 
     return polinomios
 
+F = []
 
-print(sumatoriaPolinomica(x_vinagre,x_oil,campo))
+#crear una lista con o polinomios usando la definicion anterior
+for i in range(o):
+    f = 0
+    for j in sumatoriaPolinomica(x_vinagre,x_oil,campo):
+        f += j
+    F.append(f)
+    print(f)
+
+"""private key
+NOTA: no sé de donde sacar T:Fn -> Fn"""
+
