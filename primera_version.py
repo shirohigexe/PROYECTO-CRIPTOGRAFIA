@@ -90,10 +90,11 @@ for i in range(o):
     print(f)
 ####################################################################
 transformacion_lineal_0 = np.zeros((n,n)) 
-print(transformacion_lineal_0)
+#vector de simbolos
 x= S.symbols('a')
 #np.power(x,2)
 ver_simbo=[0, 1, x, x**2]
+
 
 # Se empieza la generacion de la matriz aleatoria
 transformacion_lineal = (transformacion_lineal_0.tolist())
@@ -124,6 +125,8 @@ polinomiosFTransLineal = transformacion_lineal.dot(x_inicial)
 for i in range(n):
     T.append(polinomiosFTransLineal[i])
     print(polinomiosFTransLineal[i])
+
+
 """private key
 NOTA: no sé de donde sacar T:Fn -> Fn"""
 
