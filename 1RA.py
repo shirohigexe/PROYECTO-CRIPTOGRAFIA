@@ -37,12 +37,7 @@ A = np.zeros((n,n))
 #vector de simbolos
 x= S.symbols('x')
 #np.power(x,2)
-ver_simbo=[0, 1, np.power(x,1), np.power(x,2)]
-
-α= S.symbols('α')                               # Se genera un vector de simbolos
-#np.power(x,2)
-ver_simbo=[0, 1, np.power(α,1), np.power(α,2)]
-#ver_simbo=[0, 1, α**1, α**2]
+ver_simbo=[0, 1, x, x**2]
 
 # Se empieza la generacion de la matriz aleatoria
 transformacion_lineal = (transformacion_lineal_0.tolist())
@@ -64,27 +59,18 @@ x_inicial=[]                                    # Arreglo de varibles iniciales
 for i in range(n+1):
     x_inicial.append(S.symbols("x"+str(i)))    # Creamos las xn variables
 x_inicial = np.transpose(x_inicial)             # Creamos el vector X
+print(x_inicial)
 #print(x_inicial)
 
+T = []
 # Obtenemos los polinomios pertenecientes a la transformación lineal
 polinomiosFTransLineal = transformacion_lineal.dot(x_inicial)
 for i in range(n):
+    T.append(polinomiosFTransLineal[i])
     print(polinomiosFTransLineal[i])
 
 
 #// ***** // Paso 2. Creación de los polinomios de vinagre y aceite // ***** // #
-
-o=n/2    
-v=o
-
-vector_polinomio=[] 
-
- # Arreglo de varibles VINAGRE Y ACEITE
-
-#for i in range(0,o):
-   # poli=(S.symbols("Xv"+str(i))*S.symbols("Xv"+str(i)))+(S.symbols("Xv"+str(i))*S.symbols("Xo"+str(i)))+(S.symbols("Xv"+str(i)))+(S.symbols("X0"+str(i)))
-    #S.symbols("Xv"+str(i)))
-    #vector_polinomio.append( poli)     
 
 
 
