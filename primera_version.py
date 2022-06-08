@@ -2,13 +2,15 @@ from typing import Counter
 import sympy as S 
 import random 
 import numpy as np
-from pyfinite import ffield 
 
 """creacion del campo y sus terminos enteros
 para esto, se toma en cuenta la definicion de campo y enteros modulo m,
 con esto tomamos 10 representantes de las clases de 
 equivalencia"""
-q = 7
+q = [2,3,5,7,11]
+
+valor = random.choice(q)
+
 def campo(q):
     campo_elementos = []
     campo = []
@@ -21,7 +23,7 @@ def campo(q):
         campo.append(clase_equivalencia)
     return campo_elementos
 
-campo = campo(q)
+campo = campo(valor)
 print(campo)
 
 
@@ -87,7 +89,10 @@ for i in range(o):
     for j in sumatoriaPolinomica(x_vinagre,x_oil,campo):
         f += j
     F.append(f)
-    print(f)
+
+F = np.array(F)
+print(F)
+
 ####################################################################
 transformacion_lineal_0 = np.zeros((n,n)) 
 #vector de simbolos
@@ -98,13 +103,21 @@ ver_simbo=[0, 1, x, x**2]
 
 # Se empieza la generacion de la matriz aleatoria
 transformacion_lineal = (transformacion_lineal_0.tolist())
+
 contador = len(transformacion_lineal)**2
+
 while contador > 1:
     for i in transformacion_lineal:
         valor_aleatorio = random.choice(ver_simbo)
         indice_cambio = random.randint(0,len(i)-1)
         i[indice_cambio] = valor_aleatorio
     contador -= 1
+
+aleatoria1=[]
+for i in range(n):
+    aleatoria1.append(random.choice(ver_simbo))
+print(aleatoria1)
+aleatoria1=np.array(aleatoria1)
 
 # Convertimos el arreglo en una matriz de numpy
 transformacion_lineal = np.array(transformacion_lineal)
@@ -113,18 +126,17 @@ print(transformacion_lineal)
 
 # Obtenemos las variables x1 a xn
 x_inicial=[]                                    # Arreglo de varibles iniciales
-for i in range(n+1):
+for i in range(1,n+1):
     x_inicial.append(S.symbols("x"+str(i)))    # Creamos las xn variables
 x_inicial = np.transpose(x_inicial)             # Creamos el vector X
 print(x_inicial)
 #print(x_inicial)
 
-T = []
+
 # Obtenemos los polinomios pertenecientes a la transformación lineal
-polinomiosFTransLineal = transformacion_lineal.dot(x_inicial)
-for i in range(n):
-    T.append(polinomiosFTransLineal[i])
-    print(polinomiosFTransLineal[i])
+T = np.dot(x_inicial,transformacion_lineal) + aleatoria1
+
+print(T)
 
 
 """private key
