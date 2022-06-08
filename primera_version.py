@@ -1,5 +1,5 @@
 from typing import Counter
-import sympy as S 
+from sympy import * 
 import random 
 import numpy as np
 
@@ -24,7 +24,7 @@ def campo(q):
     return campo_elementos
 
 campo = campo(valor)
-print(campo)
+#print(campo)
 
 
 """proceso de creacion de las vaiables Oil y Vinager de modo
@@ -36,20 +36,20 @@ n = o + v # numero de variables
 
 indices_V = [i for i in range(1,v+1)]
 indices_O = [i for i in range(v+1,n+1)]
-print(indices_V)
-print(indices_O)
+#print(indices_V)
+#print(indices_O)
 
 
 
 x_vinagre=[]                                    
 for i in indices_V:
-    x_vinagre.append(S.symbols("x"+str(i)))
-print(x_vinagre)
+    x_vinagre.append(symbols("y"+str(i)))
+#print(x_vinagre)
 
 x_oil=[]                                    
 for i in indices_O:
-    x_oil.append(S.symbols("x"+str(i)))
-print(x_oil)
+    x_oil.append(symbols("y"+str(i)))
+#print(x_oil)
 
 
 """generacion de llaves
@@ -91,12 +91,16 @@ for i in range(o):
     F.append(f)
 
 F = np.array(F)
-print(F)
+
+for i in F:
+    print(i)
+print("*******************")
+#print(F)
 
 ####################################################################
 transformacion_lineal_0 = np.zeros((n,n)) 
 #vector de simbolos
-x= S.symbols('a')
+x= symbols('a')
 #np.power(x,2)
 ver_simbo=[0, 1, x, x**2]
 
@@ -116,27 +120,48 @@ while contador > 1:
 aleatoria1=[]
 for i in range(n):
     aleatoria1.append(random.choice(ver_simbo))
-print(aleatoria1)
+#print(aleatoria1)
 aleatoria1=np.array(aleatoria1)
 
 # Convertimos el arreglo en una matriz de numpy
 transformacion_lineal = np.array(transformacion_lineal)
-print(transformacion_lineal)
+#print(transformacion_lineal)
 #print(transformacion_lineal)
 
 # Obtenemos las variables x1 a xn
 x_inicial=[]                                    # Arreglo de varibles iniciales
 for i in range(1,n+1):
-    x_inicial.append(S.symbols("x"+str(i)))    # Creamos las xn variables
+    x_inicial.append(symbols("x"+str(i)))    # Creamos las xn variables
 x_inicial = np.transpose(x_inicial)             # Creamos el vector X
-print(x_inicial)
+#print(x_inicial)
 #print(x_inicial)
 
 
 # Obtenemos los polinomios pertenecientes a la transformación lineal
 T = np.dot(x_inicial,transformacion_lineal) + aleatoria1
 
-print(T)
+for i in T:
+    print(i)
+
+print("*************")
+
+# Public Key -> Se compone la transformación lineal con los polinomios de aceite y vinagre (F o T)
+
+for i in range(o):              # Polinomios de F (OV)
+    for j in range(n):          # Número de variables
+        auxPolinom = F[i]
+        #print(j,i)
+        #print(auxPolinom.subs((symbols("y"+str(j+1))),T[j]))
+        F[i] = auxPolinom.subs((symbols("y"+str(j+1))), T[j])
+        
+    
+print("******// Clave Pública // ******")
+for i in F:
+    print("// ***** Polinomios ***** //")
+    print(i)
+
+
+
 
 
 """private key
