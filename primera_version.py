@@ -3,6 +3,7 @@ from sympy import *
 import random 
 import numpy as np
 
+
 """creacion del campo y sus terminos enteros
 para esto, se toma en cuenta la definicion de campo y enteros modulo m,
 con esto tomamos 10 representantes de las clases de 
@@ -161,9 +162,20 @@ for i in F:
     print(i)
 
 
+# Generación del hash para evaluar generar la llave 
+from hashlib import blake2b
 
+message = blake2b(b'Esto es una prueba', digest_size = 1)
+hash = int(message.hexdigest(),16)
+#print(hash)
+hashstr = str(hash)
 
+#if (len(str(hash))%2 != 0):
+#    hashstr = hashstr + str(9)
 
-"""private key
-NOTA: no sé de donde sacar T:Fn -> Fn"""
+o = len(str(hashstr))
+print(o)
+print(hashstr)
 
+for i in range(o):
+    print(hashstr[i])
