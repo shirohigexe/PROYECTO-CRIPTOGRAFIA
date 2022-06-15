@@ -91,8 +91,8 @@ for i in range(o):
 
 F = np.array(F)
 
-print(F)
-
+for i in F:
+    print(i)
 print("*******************")
 
 ####################################################################
@@ -140,8 +140,6 @@ T = np.dot(x_inicial,transformacion_lineal) + aleatoria1
 for i in T:
     print(i)
 
-print("*************")
-
 # Public Key -> Se compone la transformación lineal con los polinomios de aceite y vinagre (F o T)
 
 FPublicKey = copy.deepcopy(F)
@@ -155,7 +153,8 @@ for i in range(o):              # Polinomios de F (OV)
 print("******// Clave Pública // ******")
 for i in FPublicKey:
     print(i)
-    print("// ***** Polinomios ***** //")
+    print("// ***** // ----- // ***** //")
+
 
 """ Creación de la firma """
 
@@ -168,11 +167,14 @@ FSignature = copy.deepcopy(F)
 solutionValuesImage = []
 
 # Evaluamos valores aleatorios para las variables vinagre
+for i in range(v):
+    solutionValuesImage.append(random.randint(1, 10))
+
 for i in range(o):              # Polinomios de F (OV)
     for j in range(v):          # Número de variables de vinagre
         auxPolinom = FSignature[i]
-        FSignature[i] = auxPolinom.subs((symbols("y"+str(j+1))), random.randint(0, 10)) - int(hashstr[i])   # Incluimos la Imagen (HASH)
-    solutionValuesImage.append(int((hashstr[i])))
+        FSignature[i] = auxPolinom.subs((symbols("y"+str(j+1))), solutionValuesImage[j]) - int(hashstr[i])   # Incluimos la Imagen (HASH)
+    
 
 # Resolvemos el sistema lineal
 solutionImage = solve((FSignature), x_oil)
@@ -182,9 +184,9 @@ for i in solutionImage:
     solutionValuesImage.append(float(solutionImage[i]))
 
 #print("// ***** SIGNATURE ***** //")
-#for i in range(v):
-#    print(FSignature[i])
-#print(solutionValuesImage)
+for i in range(v):
+    print(FSignature[i])
+print("solutionValuesImage",solutionValuesImage)
 
 # Partimos de la transformación lineal T
 TSignature = copy.deepcopy(T)
@@ -194,8 +196,9 @@ for i in range(n):
     auxPolinom = TSignature[i]
     TSignature[i] = auxPolinom - solutionValuesImage[i]
 
-#for i in TSignature:
-#    print(i)
+print("TSIGNATURE")
+for i in TSignature:
+    print(i)
 
 # Resolvemos el sistema lineal nxn para T^-1
 solutionPreImage = solve((TSignature), TVariables)
@@ -206,8 +209,18 @@ ValuesPreImage = []
 for i in solutionPreImage:
     ValuesPreImage.append(float(solutionPreImage[i]))
 
-print(" PRE-IMAGEN ")
+#print(" PRE-IMAGEN ")
 print(ValuesPreImage)
 
 
+""" Comprobación de la firma """
 
+TestPublicKey = copy.deepcopy(FPublicKey)
+
+for i in range(len(TestPublicKey)):              # Polinomios de F (OV)
+    for j in range(n):                           # Número de variables
+        auxPolinom = TestPublicKey[i]
+        TestPublicKey[i] = auxPolinom.subs((symbols("x"+str(j+1))), ValuesPreImage[j])
+
+for i in range(o):
+    print(TestPublicKey[i]/len(hashstr) ,hashstr[i])
