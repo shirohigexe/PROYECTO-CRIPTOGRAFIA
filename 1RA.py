@@ -18,7 +18,7 @@ from pyfinite import ffield
 valor_primo=[2,3,5,7]
 valor_campo=random.choice(valor_primo)
 F = ffield.FField(valor_campo) 
-#help(ffield.FField)
+help(ffield.FField)
 #print(valor_campo)
 #print(F.ShowPolynomial(valor_campo))
 
