@@ -144,6 +144,7 @@ for i in T:
 
 FPublicKey = copy.deepcopy(F)
 
+
 for i in range(o):              # Polinomios de F (OV)
     for j in range(n):          # Número de variables
         auxPolinom = FPublicKey[i]
@@ -223,4 +224,4 @@ for i in range(len(TestPublicKey)):              # Polinomios de F (OV)
         TestPublicKey[i] = auxPolinom.subs((symbols("x"+str(j+1))), ValuesPreImage[j])
 
 for i in range(o):
-    print(TestPublicKey[i]/len(hashstr) ,hashstr[i])
+    print(TestPublicKey[i]/len(hashstr), hashstr[i])
