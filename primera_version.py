@@ -223,7 +223,5 @@ for i in range(len(TestPublicKey)):              # Polinomios de F (OV)
         TestPublicKey[i] = auxPolinom.subs((symbols("x"+str(j+1))), ValuesPreImage[j])
 
 
-
-
 for i in range(o):
-    print(TestPublicKey[i]/len(hashstr) ,hashstr[i])
+    print(TestPublicKey[i] ,hashstr[i])
