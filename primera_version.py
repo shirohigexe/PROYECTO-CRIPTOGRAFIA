@@ -4,6 +4,8 @@ import random
 import numpy as np
 import copy
 
+import sympy
+
 
 """creacion del campo y sus terminos enteros
 para esto, se toma en cuenta la definicion de campo y enteros modulo m,
@@ -87,7 +89,7 @@ for i in range(o):
     f = 0
     for j in sumatoriaPolinomica(x_vinagre,x_oil,campo):
         f += j
-    F.append(f)
+    F.append(sympy.polys.polytools.trunc(f,7))
 
 F = np.array(F)
 
@@ -153,7 +155,7 @@ for i in range(o):              # Polinomios de F (OV)
     
 print("******// Clave Pública // ******")
 for i in FPublicKey:
-    print(i)
+    print(i) #-> sympy.polys.polytools.trunc(i,7)
     print("// ***** // ----- // ***** //")
 
 
