@@ -155,7 +155,8 @@ for i in range(o):              # Polinomios de F (OV)
     
 print("******// Clave Pública // ******")
 for i in FPublicKey:
-    print(i) #-> sympy.polys.polytools.trunc(i,7)
+    #print(i) #-> sympy.polys.polytools.trunc(i,7)
+    print(sympy.polys.polytools.trunc(i,7))
     print("// ***** // ----- // ***** //")
 
 
@@ -171,7 +172,7 @@ solutionValuesImage = []
 
 # Evaluamos valores aleatorios para las variables vinagre
 for i in range(v):
-    solutionValuesImage.append(random.randint(1, 10))
+    solutionValuesImage.append(random.randint(1, 6))# se corrigio el 10 pues la solucion debe realizarse en los numeros de los modulos
 
 for i in range(o):              # Polinomios de F (OV)
     for j in range(v):          # Número de variables de vinagre
@@ -227,8 +228,4 @@ for i in range(len(TestPublicKey)):              # Polinomios de F (OV)
 
 
 for i in range(o):
-<<<<<<< HEAD
     print(TestPublicKey[i] ,hashstr[i])
-=======
-    print(TestPublicKey[i]/len(hashstr), hashstr[i])
->>>>>>> 7932d78d4b0ab222ad065e49cdc041ff801a18f6
