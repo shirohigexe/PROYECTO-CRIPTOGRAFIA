@@ -1,9 +1,10 @@
+from math import gcd
 from hashlib import blake2b
 from sympy import * 
 import random 
 import numpy as np
 import copy
-
+from math import gcd
 import sympy
 
 
@@ -15,7 +16,7 @@ equivalencia"""
 # Generación del hash para evaluar generar la llave 
 
 message = blake2b(b'Esto es una prueba', digest_size = 1)
-hash = int(message.hexdigest(),16)
+hash = 23#int(message.hexdigest(),16)
 #print(hash)
 hashstr = str(hash)
 
@@ -24,6 +25,8 @@ hashstr = str(hash)
 
 o = len(str(hashstr)) # numero de ecuaciones
 
+# Módulo 7
+m = 7
 
 campo = [0,1,2,3,4,5,6]
 
@@ -138,6 +141,9 @@ x_inicial = np.transpose(x_inicial)             # Creamos el vector X
 # Obtenemos los polinomios pertenecientes a la transformación lineal
 T = np.dot(x_inicial,transformacion_lineal) + aleatoria1
 
+for i in range(len(T)):
+    T[i] = sympy.polys.polytools.trunc(T[i], 7)
+
 # Imprimimos cada uno de los polinomios
 for i in T:
     print(i)
@@ -153,10 +159,12 @@ for i in range(o):              # Polinomios de F (OV)
         FPublicKey[i] = auxPolinom.subs((symbols("y"+str(j+1))), T[j])
         
     
+for i in range(len(FPublicKey)):
+    FPublicKey[i] = sympy.polys.polytools.trunc(FPublicKey[i], 7)
+
 print("******// Clave Pública // ******")
 for i in FPublicKey:
-    #print(i) #-> sympy.polys.polytools.trunc(i,7)
-    print(sympy.polys.polytools.trunc(i,7))
+    print(i)
     print("// ***** // ----- // ***** //")
 
 
@@ -174,22 +182,36 @@ solutionValuesImage = []
 for i in range(v):
     solutionValuesImage.append(random.randint(1, 6))# se corrigio el 10 pues la solucion debe realizarse en los numeros de los modulos
 
-for i in range(o):              # Polinomios de F (OV)
-    for j in range(v):          # Número de variables de vinagre
+for i in range(o):                      # Polinomios de F (OV)
+    for j in range(v):                  # Número de variables de vinagre
         auxPolinom = FSignature[i]
         FSignature[i] = auxPolinom.subs((symbols("y"+str(j+1))), solutionValuesImage[j]) - int(hashstr[i])   # Incluimos la Imagen (HASH)
     
+# Convertir el sistema a aritmética modular
+for i in range(len(FSignature)):
+    FSignature[i] = sympy.polys.polytools.trunc(FSignature[i], 7)
 
-# Resolvemos el sistema lineal
-solutionImage = solve((FSignature), x_oil)
+# Generamos una copia para desarrollar la matriz
+FSignatureM = copy.deepcopy(FSignature)
+
+# Obtenemos la matriz
+FSignaturaMatrix = sympy.linear_eq_to_matrix(FSignatureM, x_oil)
+
+# Solucionamos el sistema lineal con aritmetica modular
+det = int(FSignaturaMatrix[0].det())
+ans = 0
+if gcd(det, m) == 1:                                               ########***************
+    ans = pow(det, -1, m) * FSignaturaMatrix[0].adjugate() @ FSignaturaMatrix[1] % m
 
 # Obtenemos el vector con f^-1 para el mapeo central
-for i in solutionImage:
-    solutionValuesImage.append(float(solutionImage[i]))
+print("SOLUCIONF", ans)
+for solution in ans:
+    solutionValuesImage.append(solution)
 
 #print("// ***** SIGNATURE ***** //")
 for i in range(v):
     print(FSignature[i])
+
 print("solutionValuesImage",solutionValuesImage)
 
 # Partimos de la transformación lineal T
@@ -200,18 +222,34 @@ for i in range(n):
     auxPolinom = TSignature[i]
     TSignature[i] = auxPolinom - solutionValuesImage[i]
 
+# Convertir el sistema a aritmética modular
+for i in range(len(TSignature)):
+    TSignature[i] = sympy.polys.polytools.trunc(TSignature[i], m)
+
 print("TSIGNATURE")
 for i in TSignature:
     print(i)
 
 # Resolvemos el sistema lineal nxn para T^-1
-solutionPreImage = solve((TSignature), TVariables)
+
+# Generamos una copia para desarrollar la matriz
+TSignatureM = copy.deepcopy(TSignature)
+
+# Obtenemos la matriz
+TSignatureMatrix = sympy.linear_eq_to_matrix(TSignatureM, TVariables)
+
+# Solucionamos el sistema lineal con aritmetica modular
+det = int(TSignatureMatrix[0].det())
+ansT = 0
+if gcd(det, m) == 1:  # ***************
+    ansT = pow(det, -1, m) * TSignatureMatrix[0].adjugate() @ TSignatureMatrix[1] % m
 
 ValuesPreImage = []
 
+print("SOLUCION T", ansT)
 # Obtenemos el vector con T^-1 para la transformación
-for i in solutionPreImage:
-    ValuesPreImage.append(float(solutionPreImage[i]))
+for values in ansT:
+    ValuesPreImage.append(values)
 
 #print(" PRE-IMAGEN ")
 print(ValuesPreImage)
@@ -225,7 +263,7 @@ for i in range(len(TestPublicKey)):              # Polinomios de F (OV)
     for j in range(n):                           # Número de variables
         auxPolinom = TestPublicKey[i]
         TestPublicKey[i] = auxPolinom.subs((symbols("x"+str(j+1))), ValuesPreImage[j])
-
+        TestPublicKey[i] = Mod((TestPublicKey[i]), m)
 
 for i in range(o):
-    print(TestPublicKey[i] ,hashstr[i])
+    print(TestPublicKey[i]/2, hashstr[i])
