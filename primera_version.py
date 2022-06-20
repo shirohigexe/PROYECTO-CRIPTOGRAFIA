@@ -15,8 +15,8 @@ equivalencia"""
 
 # Generación del hash para evaluar generar la llave 
 
-message = blake2b(b'Esto es una prueba', digest_size = 1)
-hash = 123#int(message.hexdigest(),16)
+message = blake2b(b'Buenos dias sennnnnnnnnnnnnnnasdasdasdasdadasdfjghjghjghqwejqwiueyquweyuqwyeuqyowuieqyor profesorrrrr', digest_size = 1)
+hash = int(message.hexdigest(),16)
 #print(hash)
 hashstr = str(hash)
 
@@ -27,6 +27,11 @@ o = len(str(hashstr)) # numero de ecuaciones
 
 # Módulo 7
 m = 7
+
+# Variables iteración
+ans = 0
+ansT = 0
+iteracion = 0
 
 campo = [0,1,2,3,4,5,6]
 
@@ -85,98 +90,108 @@ def sumatoriaPolinomica(V,O,campo): #V = x_vinagre, O= x_oil
 
     return polinomios
 
-F = []
-
-#crear una lista con o polinomios usando la definicion anterior
-for i in range(o):
-    f = 0
-    for j in sumatoriaPolinomica(x_vinagre,x_oil,campo):
-        f += j
-    F.append(sympy.polys.polytools.trunc(f,7))
-
-F = np.array(F)
-
-for i in F:
-    print(i)
-print("*******************")
-
-####################################################################
-
-""" Generación de la transformación lineal """
-
-transformacion_lineal_0 = np.zeros((n,n)) 
-
-# Se empieza la generacion de la matriz aleatoria
-transformacion_lineal = (transformacion_lineal_0.tolist())
-
-contador = len(transformacion_lineal)**2
-
-while contador > 1:
-    for i in transformacion_lineal:
-        #vector de simbolos
-        x= random.choice(campo) 
-        ver_simbo=[0, 1, Mod(x,7), Mod(x**2,7)]     #DUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        
-        valor_aleatorio = random.choice(ver_simbo)
-        indice_cambio = random.randint(0,len(i)-1)
-        i[indice_cambio] = valor_aleatorio
-    contador -= 1
-
-aleatoria1=[]
-for i in range(n):
-    aleatoria1.append(random.choice(ver_simbo))
-aleatoria1=np.array(aleatoria1)
-
-# Convertimos el arreglo en una matriz de numpy
-transformacion_lineal = np.array(transformacion_lineal)
-
-# Obtenemos las variables x1 a xn
-x_inicial=[]                                    # Arreglo de varibles iniciales
-for i in range(1,n+1):
-    x_inicial.append(symbols("x"+str(i)))    # Creamos las xn variables
-TVariables = copy.deepcopy(x_inicial)
-x_inicial = np.transpose(x_inicial)             # Creamos el vector X
-
-
-# Obtenemos los polinomios pertenecientes a la transformación lineal
-T = np.dot(x_inicial,transformacion_lineal) + aleatoria1
-
-for i in range(len(T)):
-    T[i] = sympy.polys.polytools.trunc(T[i], 7)
-
-# Imprimimos cada uno de los polinomios
-for i in T:
-    print(i)
-
-# Public Key -> Se compone la transformación lineal con los polinomios de aceite y vinagre (F o T)
-
-FPublicKey = copy.deepcopy(F)
-
-
-for i in range(o):              # Polinomios de F (OV)
-    for j in range(n):          # Número de variables
-        auxPolinom = FPublicKey[i]
-        FPublicKey[i] = auxPolinom.subs((symbols("y"+str(j+1))), T[j])
-        
-    
-for i in range(len(FPublicKey)):
-    FPublicKey[i] = sympy.polys.polytools.trunc(FPublicKey[i], 7)
-
-print("******// Clave Pública // ******")
-for i in FPublicKey:
-    print(i)
-    print("// ***** // ----- // ***** //")
-
-
-""" Creación de la firma """
-
-# La llave publica se iguala a su preimagen en el siguiente vector
-#linsolve(F,x_vinagre+x_oil)
-
-# Partimos de los polinomios de aceite y vinagre
-ans = 0
-ansT = 0
 while ans == 0 or ansT == 0:
+
+    F = []
+
+    #crear una lista con o polinomios usando la definicion anterior
+    for i in range(o):
+        f = 0
+        for j in sumatoriaPolinomica(x_vinagre,x_oil,campo):
+            f += j
+        F.append(sympy.polys.polytools.trunc(f,7))
+
+    F = np.array(F)
+
+    """for i in F:
+        print(i)
+    print("*******************")"""
+
+    ####################################################################
+
+    """ Generación de la transformación lineal """
+
+    transformacion_lineal_0 = np.zeros((n,n)) 
+
+    # Se empieza la generacion de la matriz aleatoria
+    transformacion_lineal = (transformacion_lineal_0.tolist())
+
+    contador = len(transformacion_lineal)**2
+
+    while contador > 1:
+        for i in transformacion_lineal:
+            #vector de simbolos
+            x= random.choice(campo) 
+            ver_simbo=[0, 1, Mod(x,7), Mod(x**2,7)]     #DUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            
+            valor_aleatorio = random.choice(ver_simbo)
+            indice_cambio = random.randint(0,len(i)-1)
+            i[indice_cambio] = valor_aleatorio
+        contador -= 1
+
+    aleatoria1=[]
+    for i in range(n):
+        aleatoria1.append(random.choice(ver_simbo))
+    aleatoria1=np.array(aleatoria1)
+
+    # Convertimos el arreglo en una matriz de numpy
+    transformacion_lineal = np.array(transformacion_lineal)
+
+    # Obtenemos las variables x1 a xn
+    x_inicial=[]                                    # Arreglo de varibles iniciales
+    for i in range(1,n+1):
+        x_inicial.append(symbols("x"+str(i)))    # Creamos las xn variables
+    TVariables = copy.deepcopy(x_inicial)
+    x_inicial = np.transpose(x_inicial)             # Creamos el vector X
+
+
+    # Obtenemos los polinomios pertenecientes a la transformación lineal
+    T = np.dot(x_inicial,transformacion_lineal) + aleatoria1
+
+    for i in range(len(T)):
+        T[i] = sympy.polys.polytools.trunc(T[i], 7)
+
+    # Imprimimos cada uno de los polinomios
+    """for i in T:
+        print(i)"""
+
+    # Public Key -> Se compone la transformación lineal con los polinomios de aceite y vinagre (F o T)
+
+    FPublicKey = copy.deepcopy(F)
+
+
+    for i in range(o):              # Polinomios de F (OV)
+        for j in range(n):          # Número de variables
+            auxPolinom = FPublicKey[i]
+            FPublicKey[i] = auxPolinom.subs((symbols("y"+str(j+1))), T[j])
+            
+        
+    for i in range(len(FPublicKey)):
+        FPublicKey[i] = sympy.polys.polytools.trunc(FPublicKey[i], 7)
+
+    print("******// Clave Pública // ******")
+    """for i in FPublicKey:
+        print(i)
+        print("// ***** // ----- // ***** //")"""
+
+
+    """ Creación de la firma """
+
+    # La llave publica se iguala a su preimagen en el siguiente vector
+    #linsolve(F,x_vinagre+x_oil)
+
+    # Partimos de los polinomios de aceite y vinagre
+
+
+#************************************************************
+
+    iteracion += 1
+    print(iteracion,ans,ansT)
+
+    if(iteracion >= 1000):
+        print("ERROR")
+        break
+
     FSignature = copy.deepcopy(F)
 
     solutionValuesImage = []
@@ -206,7 +221,7 @@ while ans == 0 or ansT == 0:
         ans = pow(det, -1, m) * FSignaturaMatrix[0].adjugate() @ FSignaturaMatrix[1] % m
 
     if ans != 0: 
-# Obtenemos el vector con f^-1 para el mapeo central
+        # Obtenemos el vector con f^-1 para el mapeo central
         #print("SOLUCIONF", ans)
         for solution in ans:
             solutionValuesImage.append(solution)
@@ -246,6 +261,9 @@ while ans == 0 or ansT == 0:
         if gcd(det, m) == 1:  # ***************
             ansT = pow(det, -1, m) * TSignatureMatrix[0].adjugate() @ TSignatureMatrix[1] % m
 
+        if(ansT != 0):
+            break
+
 ValuesPreImage = []
 
 print("SOLUCION T", ansT)
@@ -268,4 +286,17 @@ for i in range(len(TestPublicKey)):              # Polinomios de F (OV)
         TestPublicKey[i] = Mod((TestPublicKey[i]), m)
 
 for i in range(o):
-    print(TestPublicKey[i], hashstr[i])
+    q = (int(hashstr[i])*len(hashstr[i]))/7 - TestPublicKey[i]
+    n = (q + TestPublicKey[i])*m/len(hashstr[i])
+    print(TestPublicKey[i], hashstr[i], int(np.round(float(n))))
+
+
+"""(n*len(hashstr[i]))%7 = k
+n = k
+(8*2)%7 = 2
+
+a/b = q + m
+
+(n*len(hashstr[i]))/7 = q + TestPublicKey[i]"""
+
+
