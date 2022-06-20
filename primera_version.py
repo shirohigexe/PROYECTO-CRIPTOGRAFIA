@@ -1,3 +1,13 @@
+""" 
+// ********** // Generación Firma Digital // ********** //
+
+Programa que permite firmar digitalmente un mensaje, generación de las llaves públicas, privadas, y comprobación de las llaves
+
+
+"""
+
+
+
 from math import gcd
 from hashlib import blake2b
 from sympy import * 
@@ -14,6 +24,8 @@ con esto tomamos 10 representantes de las clases de
 equivalencia"""
 
 # Generación del hash para evaluar generar la llave 
+
+
 
 message = blake2b(b'Buenos dias sennnnnnnnnnnnnnnasdasdasdasdadasdfjghjghjghqwejqwiueyquweyuqwyeuqyowuieqyor profesorrrrr', digest_size = 1)
 hash = int(message.hexdigest(),16)
