@@ -14,12 +14,13 @@ import copy
 from math import gcd
 import sympy
 from tabulate import tabulate
+import pandas as pd
 
 """ Parte 1.1 Creación del campo y sus términos enteros.
 Para esto, se toma en cuenta la definicion de campo y enteros modulo m. """
 
 # Mensaje de entrada del usuario, indicando el nombre del archivo de texto
-nombreArchivo = input()
+nombreArchivo = input("ingrese nombre del documento: \n")
 
 # Abrimos el archivo de texto para leerlo
 archivoUsario = open(nombreArchivo, "r")
@@ -180,7 +181,7 @@ while ans == 0 or ansT == 0:
         T[i] = sympy.polys.polytools.trunc(T[i], 7)
 
     """ 2.3 - Generación de la llave pública. Se compone la transformación lineal con los polinomios de aceite y vinagre (F o T)"""
- 
+
     # Se hace una copia de los polinomios de OV
     FPublicKey = copy.deepcopy(F)
 
@@ -319,7 +320,10 @@ for i in range(o):
     TestPublicKey[i] = int(np.round(float(n)))
     print(hashstr[i],TestPublicKey[i])
 
-resultados = [hashstr,TestPublicKey]
+datos = {"Hash":list(hashstr), "PublicKey":TestPublicKey}
+print(pd.DataFrame(datos))
+
+"""resultados = [hashstr,TestPublicKey]
 resultados = np.transpose(np.array(resultados))
 
 print(resultados)
@@ -329,4 +333,4 @@ print(tabulate(resultados,
                headers=titulos,  # Escogemos los titulos
                showindex=True,  # Agregamos indices para las iteraciones
                tablefmt="fancy_grid",  # Le damos estetica a la tabla
-               stralign="center"))  # Centramos los resultados en la tabla
+               stralign="center"))  # Centramos los resultados en la tabla"""
